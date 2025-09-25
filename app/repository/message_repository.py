@@ -19,7 +19,7 @@ class MessageRepository:
                 session_id=message_data.session_id,
                 content=message_data.content,
                 timestamp=message_data.timestamp,
-                sender=message_data.sender.value,
+                sender=message_data.sender,
                 word_count=word_count,
                 character_count=character_count,
                 processed_at=processed_at
