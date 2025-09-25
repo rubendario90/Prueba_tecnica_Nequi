@@ -29,3 +29,12 @@ def read_root():
 
 @app.get("/protegido")
 def vista_protegida(dep: None = Depends(verificar_api_key)):
+    return {"mensaje": "Acceso autorizado a la vista protegida"}
+class LoginRequest(BaseModel):
+    api_key: str
+@app.post("/login")
+async def login(request: LoginRequest):
+    if request.api_key == API_KEY:
+        return {"mensaje": "Autenticación exitosa"}
+    else:
+        raise HTTPException(status_code=401, detail="API Key inválida")
