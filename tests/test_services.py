@@ -26,7 +26,7 @@ def test_process_message_success(db_session):
     result = service.process_message(data)
     assert result.message_id == "msg-10"
     assert result.metadata.word_count == 3
-    assert result.character_count == len("Hola mundo prueba")
+    assert result.metadata.character_count == len("Hola mundo prueba")
 
 def test_process_message_duplicate(db_session):
     service = MessageService(db_session)
