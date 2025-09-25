@@ -3,7 +3,7 @@ from enum import Enum
 from typing import Optional
 from pydantic import BaseModel, Field, field_validator
 from sqlalchemy import Column, String, DateTime, Integer, Text
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
 

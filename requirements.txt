@@ -3,5 +3,6 @@ uvicorn
 sqlalchemy
 pydantic
 pytest
+pytest-cov
 coverage
 httpx
