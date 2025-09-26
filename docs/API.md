@@ -331,7 +331,6 @@ Si se detecta alguna de estas palabras, se retorna un error `400` con código `I
 - **Paginación máxima**: 100 elementos por página
 - **Paginación por defecto**: 10 elementos por página
 - **Tamaño máximo de contenido**: Sin límite específico (limitado por JSON)
-- **Rate limiting**: No implementado (puede agregarse en futuras versiones)
 
 ## Zona Horaria
 
