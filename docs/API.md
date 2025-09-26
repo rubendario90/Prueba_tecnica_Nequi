@@ -61,7 +61,7 @@ Content-Type: application/json
   "message_id": "msg-001",
   "session_id": "session-123",
   "content": "Hola, ¿cómo puedo ayudarte?",
-  "timestamp": "2024-01-15T10:30:00Z",
+  "timestamp": "2024-01-15T10:30:00",
   "sender": "user"
 }
 ```
