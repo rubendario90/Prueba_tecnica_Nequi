@@ -15,17 +15,17 @@ class MessageService:
 
     def process_message(self, message_data: MessageCreate) -> MessageResponse:
         """
-        Process and store a message with validation and content filtering.
+        proceso de un mensaje: validación, cálculo de metadatos y almacenamiento.
         """
         # Validate content for inappropriate words
         self._validate_content(message_data.content)
 
-        # Calculate metadata
+        # calcular metadatos
         word_count = len(message_data.content.strip().split())
         character_count = len(message_data.content)
         processed_at = datetime.now(timezone.utc)
 
-        # Store message
+        # Almacenar mensaje
         db_message = self.repository.create_message(
             message_data=message_data,
             word_count=word_count,
@@ -33,7 +33,7 @@ class MessageService:
             processed_at=processed_at
         )
 
-        # Create response with metadata
+        # crear respuesta
         metadata = MessageMetadata(
             word_count=word_count,
             character_count=character_count,
@@ -57,7 +57,7 @@ class MessageService:
         offset: int = 0
     ) -> List[MessageResponse]:
         """
-        Retrieve messages for a session with optional filtering and pagination.
+        Recuperar mensajes por session_id con paginación y filtro opcional por remitente.
         """
         if sender and sender not in ["user", "system"]:
             raise ValidationError("Sender must be 'user' or 'system'")
@@ -73,7 +73,7 @@ class MessageService:
 
     def _validate_content(self, content: str) -> None:
         """
-        Validate message content for inappropriate words.
+        Validar el contenido del mensaje en busca de palabras inapropiadas.
         """
         content_lower = content.lower()
         for word in INAPPROPRIATE_WORDS:
@@ -85,7 +85,7 @@ class MessageService:
 
     def _convert_to_response(self, db_message: Message) -> MessageResponse:
         """
-        Convert database message to response model.
+       convertir un objeto Message de la base de datos en un MessageResponse
         """
         metadata = MessageMetadata(
             word_count=db_message.word_count,

@@ -28,12 +28,13 @@ async def create_message(
     message: MessageCreate,
     db: Session = Depends(get_db)
 ):
-    """
-    Create a new message.
-    
-    Validates the message format, processes the content, and stores it in the database.
-    Returns the processed message with metadata.
-    """
+
+"""
+Crea un nuevo mensaje.
+
+Valida el formato del mensaje, procesa el contenido y lo almacena en la base de datos.
+Devuelve el mensaje procesado con metadatos.
+""""
     try:
         service = MessageService(db)
         processed_message = service.process_message(message)
@@ -74,11 +75,12 @@ async def get_messages(
     offset: int = Query(0, ge=0, description="Number of messages to skip"),
     db: Session = Depends(get_db)
 ):
-    """
-    Get messages for a specific session.
     
-    Supports pagination and filtering by sender.
-    """
+"""
+Obtener mensajes de una sesión específica.
+
+Admite paginación y filtrado por remitente.
+"""
     try:
         service = MessageService(db)
         messages = service.get_messages_by_session(

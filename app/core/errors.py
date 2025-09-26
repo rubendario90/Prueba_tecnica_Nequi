@@ -1,7 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
 
-
 class ErrorResponse(BaseModel):
     status: str = "error"
     error: dict

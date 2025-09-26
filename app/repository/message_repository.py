@@ -11,7 +11,7 @@ class MessageRepository:
 
     def create_message(self, message_data: MessageCreate, word_count: int, character_count: int, processed_at) -> Message:
         """
-        Create a new message in the database.
+      crear un nuevo mensaje en la base de datos.
         """
         try:
             db_message = Message(
@@ -40,7 +40,7 @@ class MessageRepository:
         offset: int = 0
     ) -> List[Message]:
         """
-        Get messages by session ID with optional filtering and pagination.
+        Obtener mensajes por ID de sesión con filtrado y paginación opcionales.
         """
         query = self.db.query(Message).filter(Message.session_id == session_id)
 
@@ -52,12 +52,12 @@ class MessageRepository:
 
     def get_message_by_id(self, message_id: str) -> Optional[Message]:
         """
-        Get a single message by its ID.
+        Obtener un solo mensaje por su ID.
         """
         return self.db.query(Message).filter(Message.message_id == message_id).first()
 
     def message_exists(self, message_id: str) -> bool:
         """
-        Check if a message exists by its ID.
+        Verificar si un mensaje existe por su ID.
         """
         return self.db.query(Message).filter(Message.message_id == message_id).first() is not None

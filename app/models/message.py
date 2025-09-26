@@ -9,7 +9,7 @@ from sqlalchemy.orm import declarative_base
 Base = declarative_base()
 
 class BogotaDateTime(TypeDecorator):
-    """A DateTime column type that converts timezone-aware datetime objects to UTC naive datetime for SQLite compatibility."""
+    """Un tipo de columna DateTime que convierte objetos de fecha y hora que tienen en cuenta la zona horaria en fecha y hora  para compatibilidad con SQLite."""
     impl = DateTime
     cache_ok = True
 

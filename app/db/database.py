@@ -17,7 +17,8 @@ Base = declarative_base()
 
 def get_db():
     """
-    Database dependency to get a database session.
+    
+Dependencia de la base de datos para obtener una sesión de base de datos.
     """
     db = SessionLocal()
     try:
@@ -28,7 +29,7 @@ def get_db():
 
 def create_tables():
     """
-    Create all database tables.
+    Crear todas las tablas de la base de datos.
     """
     # Import here to avoid circular imports
     from app.models.message import Message, Base
