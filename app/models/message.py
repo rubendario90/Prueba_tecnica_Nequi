@@ -1,4 +1,5 @@
-from datetime import datetime, timezone
+from datetime import datetime
+from zoneinfo import ZoneInfo
 from enum import Enum
 from typing import Optional
 from pydantic import BaseModel, Field, field_validator
@@ -7,7 +8,7 @@ from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
 
-class UTCDateTime(TypeDecorator):
+class BogotaDateTime(TypeDecorator):
     """A DateTime column type that converts timezone-aware datetime objects to UTC naive datetime for SQLite compatibility."""
     impl = DateTime
     cache_ok = True
@@ -15,7 +16,6 @@ class UTCDateTime(TypeDecorator):
     def process_bind_param(self, value, dialect):
         if value is None:
             return None
-        # Handle string input (ISO format)
         if isinstance(value, str):
             try:
                 if value.endswith('Z'):
@@ -24,11 +24,10 @@ class UTCDateTime(TypeDecorator):
                     value = datetime.fromisoformat(value)
             except ValueError:
                 return value
-        # Handle datetime objects
         if isinstance(value, datetime):
             if value.tzinfo is not None:
-                utc_dt = value.astimezone(timezone.utc).replace(tzinfo=None)
-                return utc_dt
+                bogota_dt = value.astimezone(ZoneInfo("America/Bogota")).replace(tzinfo=None)
+                return bogota_dt
             else:
                 return value
         return value
@@ -78,13 +77,12 @@ class MessageResponse(MessageCreate):
 
 class Message(Base):
     __tablename__ = "messages"
-
     id = Column(Integer, primary_key=True, index=True)
     message_id = Column(String, unique=True, index=True, nullable=False)
     session_id = Column(String, index=True, nullable=False)
     content = Column(Text, nullable=False)
-    timestamp = Column(UTCDateTime, nullable=False)
+    timestamp = Column(BogotaDateTime, nullable=False)  # CAMBIO AQUÍ
     sender = Column(String, nullable=False)
     word_count = Column(Integer, nullable=False)
     character_count = Column(Integer, nullable=False)
-    processed_at = Column(UTCDateTime, nullable=False)
+    processed_at = Column(BogotaDateTime, nullable=False)
