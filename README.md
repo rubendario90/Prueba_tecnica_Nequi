@@ -43,9 +43,6 @@ Ejemplos prácticos de implementación:
 
 ### Para DevOps/Administradores
 - [ ] Revisar CONFIGURATION.md para variables de entorno
-- [ ] Seguir DEPLOYMENT.md para despliegue
-- [ ] Configurar monitoreo y logs
-- [ ] Implementar medidas de seguridad recomendadas
 
 ### Para QA/Testing
 - [ ] Entender los casos de uso en EXAMPLES.md

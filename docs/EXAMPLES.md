@@ -1,7 +1,7 @@
 ### 1. Estructura de Proyecto Recomendada
 
 ```
-my_chatbot_project/
+Prueba_tecnica_Nequi/
 ├── config/
 │   ├── __init__.py
 │   ├── development.py
