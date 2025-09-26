@@ -1,11 +1,60 @@
-# Prueba Técnica Nequi 🚀
 
-Bienvenido a **Prueba Técnica Nequi**, una API simple pero poderosa para el procesamiento de mensajes de chat. Este proyecto está diseñado para demostrar habilidades clave en desarrollo backend, manejo de datos y buenas prácticas de programación.
+Esta carpeta contiene la documentación completa para la API de procesamiento de mensajes de Nequi.
 
-## ✨ Características principales
+## 📚 Archivos de Documentación
 
-- **Recepción de mensajes de chat:** La API permite recibir mensajes en tiempo real.
-- **Validación de formato:** Se asegura que los mensajes cumplan con el formato requerido antes de procesarlos.
-- **Procesamiento de mensajes:** Aplica transformaciones simples a los mensajes (ejemplo: conversión de texto, limpieza, etc).
-- **Almacenamiento en base de datos:** Guarda los mensajes procesados para su posterior consulta.
-- **Respuestas apropiadas:** Devuelve respuestas claras y útiles según el resultado de la operación.
+### 📖 [API.md](./API.md)
+Documentación técnica completa de la API, incluyendo:
+- Descripción detallada de todos los endpoints
+- Formatos de request y response
+- Códigos de error y manejo de excepciones
+- Ejemplos de uso con cURL
+- Información sobre autenticación y seguridad
+
+### ⚙️ [CONFIGURATION.md](./CONFIGURATION.md)
+Guía completa de configuración del sistema:
+- Variables de configuración disponibles
+- Configuración de base de datos
+- Configuración de autenticación
+- Variables de entorno
+
+### 💡 [EXAMPLES.md](./EXAMPLES.md)
+Ejemplos prácticos de implementación:
+- Ejemplos con cURL, Python, y JavaScript
+- Cliente API completo
+- Casos de uso reales (chatbot, análisis de mensajes)
+- Manejo de errores y mejores prácticas
+- Código listo para usar
+
+## 🚀 Inicio Rápido
+
+1. **Lee el README principal** del proyecto para entender la arquitectura
+2. **Consulta API.md** para entender los endpoints disponibles
+3. **Revisa EXAMPLES.md** para ver implementaciones práticas
+4. **Usa CONFIGURATION.md** para personalizar la configuración
+
+## 📋 Lista de Verificación para Nuevos Usuarios
+
+### Para Desarrolladores
+- [ ] Leer README.md principal del proyecto
+- [ ] Revisar API.md para entender los endpoints
+- [ ] Probar ejemplos de EXAMPLES.md
+- [ ] Configurar entorno local siguiendo las instrucciones
+
+### Para DevOps/Administradores
+- [ ] Revisar CONFIGURATION.md para variables de entorno
+- [ ] Seguir DEPLOYMENT.md para despliegue
+- [ ] Configurar monitoreo y logs
+- [ ] Implementar medidas de seguridad recomendadas
+
+### Para QA/Testing
+- [ ] Entender los casos de uso en EXAMPLES.md
+- [ ] Probar todos los endpoints documentados en API.md
+- [ ] Validar manejo de errores
+- [ ] Verificar configuraciones de seguridad
+
+## 🔗 Enlaces Útiles
+
+- **Documentación Interactiva**: http://localhost:8000/docs (cuando la app esté ejecutándose)
+- **Schema OpenAPI**: http://localhost:8000/openapi.json
+- **ReDoc**: http://localhost:8000/redoc
