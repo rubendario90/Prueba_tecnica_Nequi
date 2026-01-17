@@ -26,17 +26,29 @@ Ejemplos prácticos de implementación:
 - Manejo de errores y mejores prácticas
 - Código listo para usar
 
+### 💼 [TECHNICAL_SKILLS.md](./docs/TECHNICAL_SKILLS.md)
+Guía completa de habilidades técnicas necesarias para trabajar en el proyecto:
+- Lenguajes de programación requeridos
+- Frameworks y librerías utilizadas
+- Herramientas de desarrollo
+- Conocimientos de base de datos
+- Testing y calidad de código
+- DevOps y despliegue
+- Recursos de aprendizaje recomendados
+
 ## 🚀 Inicio Rápido
 
 1. **Lee el README principal** del proyecto para entender la arquitectura
-2. **Consulta API.md** para entender los endpoints disponibles
-3. **Revisa EXAMPLES.md** para ver implementaciones práticas
-4. **Usa CONFIGURATION.md** para personalizar la configuración
+2. **Consulta TECHNICAL_SKILLS.md** para conocer las habilidades requeridas
+3. **Consulta API.md** para entender los endpoints disponibles
+4. **Revisa EXAMPLES.md** para ver implementaciones práticas
+5. **Usa CONFIGURATION.md** para personalizar la configuración
 
 ## 📋 Lista de Verificación para Nuevos Usuarios
 
 ### Para Desarrolladores
 - [ ] Leer README.md principal del proyecto
+- [ ] Revisar TECHNICAL_SKILLS.md para conocer las habilidades necesarias
 - [ ] Revisar API.md para entender los endpoints
 - [ ] Probar ejemplos de EXAMPLES.md
 - [ ] Configurar entorno local siguiendo las instrucciones
