@@ -38,7 +38,7 @@ Guía completa de habilidades técnicas necesarias para trabajar en el proyecto:
 
 ## 🚀 Inicio Rápido
 
-1. **Lee el README principal** del proyecto para entender la arquitectura
+1. **Consulta este README** para una visión general de la documentación
 2. **Consulta TECHNICAL_SKILLS.md** para conocer las habilidades requeridas
 3. **Consulta API.md** para entender los endpoints disponibles
 4. **Revisa EXAMPLES.md** para ver implementaciones práticas
@@ -47,7 +47,7 @@ Guía completa de habilidades técnicas necesarias para trabajar en el proyecto:
 ## 📋 Lista de Verificación para Nuevos Usuarios
 
 ### Para Desarrolladores
-- [ ] Leer README.md principal del proyecto
+- [ ] Leer este README para una visión general de la documentación
 - [ ] Revisar TECHNICAL_SKILLS.md para conocer las habilidades necesarias
 - [ ] Revisar API.md para entender los endpoints
 - [ ] Probar ejemplos de EXAMPLES.md

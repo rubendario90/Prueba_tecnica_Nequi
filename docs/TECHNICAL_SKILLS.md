@@ -391,10 +391,11 @@ Este documento describe las habilidades técnicas requeridas para continuar el d
    - Abrir http://localhost:8000/docs en el navegador
 
 5. **Leer la documentación del proyecto**:
-   - README.md
+   - docs/README.md
    - docs/API.md
    - docs/CONFIGURATION.md
    - docs/EXAMPLES.md
+   - docs/TECHNICAL_SKILLS.md (este documento)
 
 6. **Revisar el código**:
    - Empezar por `main.py`
