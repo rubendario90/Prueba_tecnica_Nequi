@@ -26,7 +26,7 @@ Ejemplos prácticos de implementación:
 - Manejo de errores y mejores prácticas
 - Código listo para usar
 
-### 💼 [TECHNICAL_SKILLS.md](./docs/TECHNICAL_SKILLS.md)
+### 💼 [TECHNICAL_SKILLS.md](./TECHNICAL_SKILLS.md)
 Guía completa de habilidades técnicas necesarias para trabajar en el proyecto:
 - Lenguajes de programación requeridos
 - Frameworks y librerías utilizadas
