@@ -29,8 +29,10 @@ def sanitize_filename(filename: str) -> str:
     """Sanitize filename to prevent path traversal attacks."""
     # Get just the basename, removing any path components
     safe_name = os.path.basename(filename)
-    # Remove any potentially dangerous characters
-    safe_name = "".join(c for c in safe_name if c.isalnum() or c in "._- ")
+    # Remove any potentially dangerous characters, replace spaces with underscores
+    safe_name = "".join(c if c.isalnum() or c in "._-" else "_" for c in safe_name)
+    # Remove consecutive underscores
+    safe_name = "_".join(filter(None, safe_name.split("_")))
     # Generate unique filename with UUID prefix to prevent collisions
     name, ext = os.path.splitext(safe_name)
     unique_name = f"{uuid.uuid4().hex[:8]}_{name}{ext}"
@@ -104,20 +106,22 @@ async def upload_video(
                 
                 # Check size limit while streaming
                 if file_size > MAX_FILE_SIZE:
-                    # Clean up partial file
-                    f.close()
-                    file_path.unlink(missing_ok=True)
-                    
-                    error_response = ErrorResponse(
-                        error=ErrorDetail(
-                            code="INVALID_FORMAT",
-                            message="File size exceeds maximum allowed",
-                            details=f"Maximum file size: {MAX_FILE_SIZE / (1024 * 1024):.0f} MB"
-                        ).model_dump()
-                    )
-                    raise HTTPException(status_code=400, detail=error_response.model_dump())
+                    # Break to exit context manager, then clean up
+                    break
                 
                 f.write(chunk)
+        
+        # If file exceeded size limit, delete it and raise error
+        if file_size > MAX_FILE_SIZE:
+            file_path.unlink(missing_ok=True)
+            error_response = ErrorResponse(
+                error=ErrorDetail(
+                    code="INVALID_FORMAT",
+                    message="File size exceeds maximum allowed",
+                    details=f"Maximum file size: {MAX_FILE_SIZE / (1024 * 1024):.0f} MB"
+                ).model_dump()
+            )
+            raise HTTPException(status_code=400, detail=error_response.model_dump())
 
         return UploadResponse(
             message="Video uploaded successfully",
@@ -199,20 +203,22 @@ async def upload_file(
                 
                 # Check size limit while streaming
                 if file_size > MAX_FILE_SIZE:
-                    # Clean up partial file
-                    f.close()
-                    file_path.unlink(missing_ok=True)
-                    
-                    error_response = ErrorResponse(
-                        error=ErrorDetail(
-                            code="INVALID_FORMAT",
-                            message="File size exceeds maximum allowed",
-                            details=f"Maximum file size: {MAX_FILE_SIZE / (1024 * 1024):.0f} MB"
-                        ).model_dump()
-                    )
-                    raise HTTPException(status_code=400, detail=error_response.model_dump())
+                    # Break to exit context manager, then clean up
+                    break
                 
                 f.write(chunk)
+        
+        # If file exceeded size limit, delete it and raise error
+        if file_size > MAX_FILE_SIZE:
+            file_path.unlink(missing_ok=True)
+            error_response = ErrorResponse(
+                error=ErrorDetail(
+                    code="INVALID_FORMAT",
+                    message="File size exceeds maximum allowed",
+                    details=f"Maximum file size: {MAX_FILE_SIZE / (1024 * 1024):.0f} MB"
+                ).model_dump()
+            )
+            raise HTTPException(status_code=400, detail=error_response.model_dump())
 
         return UploadResponse(
             message="File uploaded successfully",
