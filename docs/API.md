@@ -154,7 +154,129 @@ GET /api/messages/session-123?sender=user&limit=5&offset=0
 
 ---
 
-### 4. Login/Autenticación
+### 4. Subir Video
+
+**Descripción**: Sube un archivo de video al servidor.
+
+```
+POST /api/upload/video
+```
+
+**Headers**:
+```
+Content-Type: multipart/form-data
+```
+
+**Form Data**:
+```
+file: <video file>                // Requerido: Archivo de video
+session_id: string               // Opcional: ID de la sesión
+```
+
+**Formatos permitidos**: `.mp4`, `.avi`, `.mov`, `.mkv`, `.webm`, `.flv`
+
+**Ejemplo de petición con cURL**:
+```bash
+curl -X POST "http://localhost:8000/api/upload/video" \
+  -F "file=@/path/to/video.mp4" \
+  -F "session_id=session-123"
+```
+
+**Respuesta exitosa** (200):
+```json
+{
+  "status": "success",
+  "message": "Video uploaded successfully",
+  "filename": "video.mp4",
+  "size": 1048576,
+  "content_type": "video/mp4"
+}
+```
+
+**Respuesta de error - Formato inválido** (400):
+```json
+{
+  "detail": {
+    "status": "error",
+    "error": {
+      "code": "INVALID_FORMAT",
+      "message": "Invalid video format",
+      "details": "Allowed formats: .mp4, .avi, .mov, .mkv, .webm, .flv"
+    }
+  }
+}
+```
+
+**Respuesta de error - Archivo muy grande** (400):
+```json
+{
+  "detail": {
+    "status": "error",
+    "error": {
+      "code": "INVALID_FORMAT",
+      "message": "File size exceeds maximum allowed",
+      "details": "Maximum file size: 100 MB"
+    }
+  }
+}
+```
+
+**Códigos de estado**:
+- `200`: Video subido exitosamente
+- `400`: Error de validación (formato o tamaño)
+- `422`: Datos faltantes o incorrectos
+- `500`: Error interno del servidor
+
+---
+
+### 5. Subir Archivo
+
+**Descripción**: Sube un archivo general al servidor.
+
+```
+POST /api/upload/file
+```
+
+**Headers**:
+```
+Content-Type: multipart/form-data
+```
+
+**Form Data**:
+```
+file: <file>                     // Requerido: Archivo
+session_id: string               // Opcional: ID de la sesión
+```
+
+**Formatos permitidos**: `.pdf`, `.doc`, `.docx`, `.txt`, `.jpg`, `.jpeg`, `.png`, `.gif`, `.mp4`, `.avi`, `.mov`, `.mkv`, `.webm`, `.flv`
+
+**Ejemplo de petición con cURL**:
+```bash
+curl -X POST "http://localhost:8000/api/upload/file" \
+  -F "file=@/path/to/document.pdf" \
+  -F "session_id=session-123"
+```
+
+**Respuesta exitosa** (200):
+```json
+{
+  "status": "success",
+  "message": "File uploaded successfully",
+  "filename": "document.pdf",
+  "size": 524288,
+  "content_type": "application/pdf"
+}
+```
+
+**Códigos de estado**:
+- `200`: Archivo subido exitosamente
+- `400`: Error de validación (formato o tamaño)
+- `422`: Datos faltantes o incorrectos
+- `500`: Error interno del servidor
+
+---
+
+### 6. Login/Autenticación
 
 **Descripción**: Verifica las credenciales de API Key.
 
@@ -195,7 +317,7 @@ Content-Type: application/json
 
 ---
 
-### 5. Endpoint Protegido
+### 7. Endpoint Protegido
 
 **Descripción**: Endpoint de ejemplo que requiere autenticación.
 
@@ -330,7 +452,10 @@ Si se detecta alguna de estas palabras, se retorna un error `400` con código `I
 
 - **Paginación máxima**: 100 elementos por página
 - **Paginación por defecto**: 10 elementos por página
-- **Tamaño máximo de contenido**: Sin límite específico (limitado por JSON)
+- **Tamaño máximo de contenido de mensaje**: Sin límite específico (limitado por JSON)
+- **Tamaño máximo de archivo**: 100 MB
+- **Formatos de video permitidos**: `.mp4`, `.avi`, `.mov`, `.mkv`, `.webm`, `.flv`
+- **Formatos de archivo permitidos**: `.pdf`, `.doc`, `.docx`, `.txt`, `.jpg`, `.jpeg`, `.png`, `.gif` (además de formatos de video)
 
 ## Zona Horaria
 
