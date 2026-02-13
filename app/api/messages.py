@@ -28,13 +28,12 @@ async def create_message(
     message: MessageCreate,
     db: Session = Depends(get_db)
 ):
+    """
+    Crea un nuevo mensaje.
 
-"""
-Crea un nuevo mensaje.
-
-Valida el formato del mensaje, procesa el contenido y lo almacena en la base de datos.
-Devuelve el mensaje procesado con metadatos.
-""""
+    Valida el formato del mensaje, procesa el contenido y lo almacena en la base de datos.
+    Devuelve el mensaje procesado con metadatos.
+    """
     try:
         service = MessageService(db)
         processed_message = service.process_message(message)
@@ -47,11 +46,11 @@ Devuelve el mensaje procesado con metadatos.
                 code=e.code,
                 message=e.message,
                 details=e.details
-            ).dict()
+            ).model_dump()
         )
         raise HTTPException(
             status_code=e.status_code,
-            detail=error_response.dict()
+            detail=error_response.model_dump()
         )
     except Exception as e:
         error_response = ErrorResponse(
@@ -59,11 +58,11 @@ Devuelve el mensaje procesado con metadatos.
                 code="INTERNAL_ERROR",
                 message="An internal server error occurred",
                 details=str(e)
-            ).dict()
+            ).model_dump()
         )
         raise HTTPException(
             status_code=500,
-            detail=error_response.dict()
+            detail=error_response.model_dump()
         )
 
 
@@ -75,12 +74,11 @@ async def get_messages(
     offset: int = Query(0, ge=0, description="Number of messages to skip"),
     db: Session = Depends(get_db)
 ):
-    
-"""
-Obtener mensajes de una sesión específica.
+    """
+    Obtener mensajes de una sesión específica.
 
-Admite paginación y filtrado por remitente.
-"""
+    Admite paginación y filtrado por remitente.
+    """
     try:
         service = MessageService(db)
         messages = service.get_messages_by_session(
@@ -107,11 +105,11 @@ Admite paginación y filtrado por remitente.
                 code=e.code,
                 message=e.message,
                 details=e.details
-            ).dict()
+            ).model_dump()
         )
         raise HTTPException(
             status_code=e.status_code,
-            detail=error_response.dict()
+            detail=error_response.model_dump()
         )
     except Exception as e:
         error_response = ErrorResponse(
@@ -119,9 +117,9 @@ Admite paginación y filtrado por remitente.
                 code="INTERNAL_ERROR",
                 message="An internal server error occurred",
                 details=str(e)
-            ).dict()
+            ).model_dump()
         )
         raise HTTPException(
             status_code=500,
-            detail=error_response.dict()
+            detail=error_response.model_dump()
         )

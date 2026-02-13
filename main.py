@@ -3,6 +3,7 @@ from fastapi.security import APIKeyHeader
 from pydantic import BaseModel
 
 from app.api.messages import router as messages_router
+from app.api.uploads import router as uploads_router
 from app.db.database import create_tables
 from app.core.config import API_TITLE, API_DESCRIPTION, API_VERSION
 
@@ -17,6 +18,7 @@ app = FastAPI(
 
 # Incluir routers
 app.include_router(messages_router)
+app.include_router(uploads_router)
 
 API_KEY = "mi_api_key_secreta"
 api_key_header = APIKeyHeader(name="X-API-Key")

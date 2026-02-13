@@ -7,3 +7,4 @@ pytest-cov
 coverage
 httpx
 tzdata
+python-multipart
