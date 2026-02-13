@@ -1,4 +1,5 @@
 import os
+import uuid
 from pathlib import Path
 from typing import Optional
 from fastapi import APIRouter, File, UploadFile, HTTPException, Form
@@ -19,8 +20,21 @@ class UploadResponse(BaseModel):
     status: str = "success"
     message: str
     filename: str
+    original_filename: str
     size: int
     content_type: str
+
+
+def sanitize_filename(filename: str) -> str:
+    """Sanitize filename to prevent path traversal attacks."""
+    # Get just the basename, removing any path components
+    safe_name = os.path.basename(filename)
+    # Remove any potentially dangerous characters
+    safe_name = "".join(c for c in safe_name if c.isalnum() or c in "._- ")
+    # Generate unique filename with UUID prefix to prevent collisions
+    name, ext = os.path.splitext(safe_name)
+    unique_name = f"{uuid.uuid4().hex[:8]}_{name}{ext}"
+    return unique_name
 
 
 def validate_file_extension(filename: str, allowed_extensions: list) -> bool:
@@ -68,33 +82,47 @@ async def upload_video(
             )
             raise HTTPException(status_code=400, detail=error_response.model_dump())
 
-        # Read file content to get size
-        file_content = await file.read()
-        file_size = len(file_content)
-
-        # Validate file size
-        if not validate_file_size(file_size):
-            error_response = ErrorResponse(
-                error=ErrorDetail(
-                    code="INVALID_FORMAT",
-                    message="File size exceeds maximum allowed",
-                    details=f"Maximum file size: {MAX_FILE_SIZE / (1024 * 1024):.0f} MB"
-                ).model_dump()
-            )
-            raise HTTPException(status_code=400, detail=error_response.model_dump())
+        # Sanitize filename to prevent path traversal
+        safe_filename = sanitize_filename(file.filename)
 
         # Create upload directory if it doesn't exist
         upload_path = Path(UPLOAD_DIR)
         upload_path.mkdir(exist_ok=True)
 
-        # Save file
-        file_path = upload_path / file.filename
+        # Save file in chunks to avoid memory issues with large files
+        file_path = upload_path / safe_filename
+        file_size = 0
+        chunk_size = 1024 * 1024  # 1 MB chunks
+
         with open(file_path, "wb") as f:
-            f.write(file_content)
+            while True:
+                chunk = await file.read(chunk_size)
+                if not chunk:
+                    break
+                
+                file_size += len(chunk)
+                
+                # Check size limit while streaming
+                if file_size > MAX_FILE_SIZE:
+                    # Clean up partial file
+                    f.close()
+                    file_path.unlink(missing_ok=True)
+                    
+                    error_response = ErrorResponse(
+                        error=ErrorDetail(
+                            code="INVALID_FORMAT",
+                            message="File size exceeds maximum allowed",
+                            details=f"Maximum file size: {MAX_FILE_SIZE / (1024 * 1024):.0f} MB"
+                        ).model_dump()
+                    )
+                    raise HTTPException(status_code=400, detail=error_response.model_dump())
+                
+                f.write(chunk)
 
         return UploadResponse(
             message="Video uploaded successfully",
-            filename=file.filename,
+            filename=safe_filename,
+            original_filename=file.filename,
             size=file_size,
             content_type=file.content_type or "application/octet-stream"
         )
@@ -149,33 +177,47 @@ async def upload_file(
             )
             raise HTTPException(status_code=400, detail=error_response.model_dump())
 
-        # Read file content to get size
-        file_content = await file.read()
-        file_size = len(file_content)
-
-        # Validate file size
-        if not validate_file_size(file_size):
-            error_response = ErrorResponse(
-                error=ErrorDetail(
-                    code="INVALID_FORMAT",
-                    message="File size exceeds maximum allowed",
-                    details=f"Maximum file size: {MAX_FILE_SIZE / (1024 * 1024):.0f} MB"
-                ).model_dump()
-            )
-            raise HTTPException(status_code=400, detail=error_response.model_dump())
+        # Sanitize filename to prevent path traversal
+        safe_filename = sanitize_filename(file.filename)
 
         # Create upload directory if it doesn't exist
         upload_path = Path(UPLOAD_DIR)
         upload_path.mkdir(exist_ok=True)
 
-        # Save file
-        file_path = upload_path / file.filename
+        # Save file in chunks to avoid memory issues with large files
+        file_path = upload_path / safe_filename
+        file_size = 0
+        chunk_size = 1024 * 1024  # 1 MB chunks
+
         with open(file_path, "wb") as f:
-            f.write(file_content)
+            while True:
+                chunk = await file.read(chunk_size)
+                if not chunk:
+                    break
+                
+                file_size += len(chunk)
+                
+                # Check size limit while streaming
+                if file_size > MAX_FILE_SIZE:
+                    # Clean up partial file
+                    f.close()
+                    file_path.unlink(missing_ok=True)
+                    
+                    error_response = ErrorResponse(
+                        error=ErrorDetail(
+                            code="INVALID_FORMAT",
+                            message="File size exceeds maximum allowed",
+                            details=f"Maximum file size: {MAX_FILE_SIZE / (1024 * 1024):.0f} MB"
+                        ).model_dump()
+                    )
+                    raise HTTPException(status_code=400, detail=error_response.model_dump())
+                
+                f.write(chunk)
 
         return UploadResponse(
             message="File uploaded successfully",
-            filename=file.filename,
+            filename=safe_filename,
+            original_filename=file.filename,
             size=file_size,
             content_type=file.content_type or "application/octet-stream"
         )
